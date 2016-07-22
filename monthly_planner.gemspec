@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'monthly_planner'
-  s.version = '0.1.0'
+  s.version = '0.2.0'
   s.summary = 'Stores upcoming dates for the month primarily in a plain text file'
   s.authors = ['James Robertson']
   s.files = Dir['lib/monthly_planner.rb']
