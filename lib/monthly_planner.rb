@@ -14,12 +14,13 @@ require 'fuzzy_match'
 #  * create a new monthly-planner.txt file
 #  * read an existing monthly-planner.txt file
 #  * archive and synchronise entries from the monthly-planner with the archive
+#  * purge historical dates
 
 
 class RecordX
   
   def date
-    Chronic.parse(@date)
+    Chronic.parse(@date).to_date
   end
   
 end
@@ -28,7 +29,7 @@ class MonthlyPlanner
   
   attr_reader :to_s
 
-  def initialize(filename='monthly-planner.txt', path: '.')
+  def initialize(filename='monthly-planner.txt', path: '.', today: Date.today)
     
     @filename, @path = filename, path
     
@@ -38,6 +39,10 @@ class MonthlyPlanner
 
       @dx = import_to_dx(File.read(fpath))    
       sync_archive(@dx.all)
+      
+      # purge any past dates
+      @dx.all.reject! {|x| x.date < today}
+          
     else
       @dx = new_dx    
     end
