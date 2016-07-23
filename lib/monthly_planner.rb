@@ -39,7 +39,7 @@ class MonthlyPlanner
 
       @dx = import_to_dx(File.read(fpath))    
       sync_archive(@dx.all)
-      
+
       # purge any past dates
       @dx.all.reject! {|x| x.date < today}
           
@@ -77,12 +77,13 @@ class MonthlyPlanner
 
     regexp = %r{
 
-      (?<day>\d+(?:-|th|[rn]d|st)){0}
+      (?<day>\d+(?:-|th|[rn]d|st|\s+)){0}
       (?<month>#{Date::ABBR_MONTHNAMES[1..-1].join('|')}){0}
-      (?<time>\d+[ap]m){0}
+      (?<time>\d+(?:\:\d+)[ap]m){0}
 
       ^(?<date>\g<day>\s*\g<month>)\s*\g<time>?\s*(?<event>.*)
     }x
+
 
     dx = new_dx()
     a = LineTree.new(s).to_a
