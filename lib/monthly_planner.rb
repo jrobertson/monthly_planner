@@ -79,10 +79,11 @@ class MonthlyPlanner
 
       (?<day>\d+(?:-|th|[rn]d|st|\s+)){0}
       (?<month>#{Date::ABBR_MONTHNAMES[1..-1].join('|')}){0}
-      (?<time>\d+(?:\:\d+)[ap]m){0}
-
+      (?<timex>\d+(?:\:\d+)?(?:[ap]m)?){0}
+      (?<time>\g<timex>(?:-?\s?\g<timex>)?){0}
       ^(?<date>\g<day>\s*\g<month>)\s*\g<time>?\s*(?<event>.*)
     }x
+
 
 
     dx = new_dx()
