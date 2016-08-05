@@ -30,7 +30,12 @@ class MonthlyPlanner
   attr_reader :to_s
 
   def initialize(filename='monthly-planner.txt', path: '.', today: Date.today)
-    
+
+    # is it a Dynarex file
+    s, type = RXFHelper.read(filename)
+
+    return @dx = Dynarex.new(s) if type == :url
+
     @filename, @path = filename, path
     
     fpath = File.join(path, filename)
@@ -58,6 +63,12 @@ class MonthlyPlanner
     File.write File.join(@path, filename), s
     @dx.save File.join(@path, filename.sub(/\.txt$/,'.xml'))
         
+  end
+  
+  def this_week()
+    @dx.all.select do |x|
+      x.date < Date.today + 7
+    end
   end
   
   def to_s()
