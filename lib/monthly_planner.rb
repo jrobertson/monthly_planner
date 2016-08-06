@@ -34,7 +34,7 @@ class MonthlyPlanner
     # is it a Dynarex file
     s, type = RXFHelper.read(filename)
 
-    return @dx = Dynarex.new(s) if type == :url
+    return @dx = Dynarex.new(s) if type == :url or s =~ /^</
 
     @filename, @path = filename, path
     
@@ -66,9 +66,9 @@ class MonthlyPlanner
   end
   
   def this_week()
-    @dx.all.select do |x|
-      x.date < Date.today + 7
-    end
+    
+    @dx.all.select {|x|  x.date < Date.today + 7 }
+
   end
   
   def to_s()
